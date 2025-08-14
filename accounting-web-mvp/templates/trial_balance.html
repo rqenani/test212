@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between">
+  <h3>Trial Balance — {{ company.name }}</h3>
+  <div>
+    <a class="btn btn-outline-secondary" href="{{ url_for('index') }}">Kthehu</a>
+    <a class="btn btn-primary" href="{{ url_for('export_trial_balance', company_id=company.id) }}">Shkarko Excel</a>
+  </div>
+</div>
+
+<table class="table table-striped bg-white shadow-sm">
+  <thead>
+    <tr><th>Kodi</th><th>Emri</th><th>Tipi</th><th class="text-end">Debiti (Tot)</th><th class="text-end">Krediti (Tot)</th><th class="text-end">Bilanci</th></tr>
+  </thead>
+  <tbody>
+  {% for r in rows %}
+    <tr>
+      <td>{{ r.code }}</td>
+      <td>{{ r.name }}</td>
+      <td>{{ r.type }}</td>
+      <td class="text-end">{{ '%.2f'|format(r.debit_total) }}</td>
+      <td class="text-end">{{ '%.2f'|format(r.credit_total) }}</td>
+      <td class="text-end">{{ '%.2f'|format(r.balance) }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

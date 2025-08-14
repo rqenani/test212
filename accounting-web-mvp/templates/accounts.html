@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between">
+  <h3>Plan kontabël — {{ company.name }}</h3>
+  <a class="btn btn-outline-secondary" href="{{ url_for('index') }}">Kthehu</a>
+</div>
+
+<form method="post" class="row g-2 align-items-end my-3" enctype="multipart/form-data">
+  <div class="col-md-2">
+    <label class="form-label">Kodi</label>
+    <input name="code" class="form-control" required>
+  </div>
+  <div class="col-md-5">
+    <label class="form-label">Emri</label>
+    <input name="name" class="form-control" required>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Tipi</label>
+    <select name="type" class="form-select" required>
+      <option value="">— Zgjidh —</option>
+      <option>Asset</option>
+      <option>Liability</option>
+      <option>Equity</option>
+      <option>Income</option>
+      <option>Expense</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <button class="btn btn-primary w-100">Shto</button>
+  </div>
+</form>
+
+<div class="mb-3">
+  <form method="post" action="{{ url_for('import_accounts', company_id=company.id) }}" enctype="multipart/form-data" class="d-flex gap-2 align-items-center">
+    <input type="file" name="file" accept=".csv" class="form-control">
+    <button class="btn btn-outline-primary">Import CSV</button>
+    <div class="ms-2 small text-muted">Kolonat: code,name,type</div>
+  </form>
+</div>
+
+<table class="table table-striped bg-white shadow-sm">
+  <thead>
+    <tr><th>Kodi</th><th>Emri</th><th>Tipi</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for a in items %}
+    <tr>
+      <td>{{ a.code }}</td>
+      <td>{{ a.name }}</td>
+      <td>{{ a.type }}</td>
+      <td class="text-end">
+        <form method="post" action="{{ url_for('delete_account', company_id=company.id, account_id=a.id) }}" onsubmit="return confirm('Fshije?');">
+          <button class="btn btn-sm btn-outline-danger">Fshi</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

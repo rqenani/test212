@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Subjektet</h3>
+<form method="post" class="row g-2 align-items-end mb-3">
+  <div class="col-md-4">
+    <label class="form-label">Emri</label>
+    <input name="name" class="form-control" required>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">NIPT</label>
+    <input name="nipt" class="form-control">
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Adresa</label>
+    <input name="address" class="form-control">
+  </div>
+  <div class="col-md-1">
+    <button class="btn btn-primary w-100">Shto</button>
+  </div>
+</form>
+
+<table class="table table-striped bg-white shadow-sm">
+  <thead>
+    <tr><th>Emri</th><th>NIPT</th><th>Adresa</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for c in items %}
+    <tr>
+      <td>{{ c.name }}</td>
+      <td>{{ c.nipt }}</td>
+      <td>{{ c.address }}</td>
+      <td class="text-end">
+        <form method="post" action="{{ url_for('delete_company', company_id=c.id) }}" onsubmit="return confirm('Fshije?');">
+          <button class="btn btn-sm btn-outline-danger">Fshi</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

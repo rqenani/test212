@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h3>Subjektet (Companies)</h3>
+  <a class="btn btn-primary" href="{{ url_for('companies') }}">Menaxho subjektet</a>
+</div>
+<div class="row g-3">
+  {% for c in companies %}
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title mb-1">{{ c.name }}</h5>
+        <div class="text-muted small mb-2">NIPT: {{ c.nipt or '—' }}</div>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('accounts', company_id=c.id) }}">Plan kontabël</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('entries', company_id=c.id) }}">Shënime ditari</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('bank', company_id=c.id) }}">Banka/Kasa</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('trial_balance', company_id=c.id) }}">Trial Balance</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

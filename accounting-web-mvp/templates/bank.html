@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between">
+  <h3>Banka/Kasa — {{ company.name }}</h3>
+  <a class="btn btn-outline-secondary" href="{{ url_for('index') }}">Kthehu</a>
+</div>
+
+<div class="my-3">
+  <form method="post" action="{{ url_for('import_bank', company_id=company.id) }}" enctype="multipart/form-data" class="d-flex gap-2 align-items-center">
+    <input type="file" name="file" accept=".csv" class="form-control">
+    <button class="btn btn-outline-primary">Import Bank CSV</button>
+    <div class="ms-2 small text-muted">Kolonat: date,description,amount,account_code (ops.)</div>
+  </form>
+</div>
+
+<form method="post" class="row g-2 align-items-end my-3">
+  <div class="col-md-2">
+    <label class="form-label">Data</label>
+    <input type="date" name="date" class="form-control" required>
+  </div>
+  <div class="col-md-5">
+    <label class="form-label">Përshkrimi</label>
+    <input name="description" class="form-control">
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">Shuma (+/-)</label>
+    <input name="amount" class="form-control" type="number" step="0.01" required>
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">Llogari (ops.)</label>
+    <select name="account_id" class="form-select">
+      <option value="">—</option>
+      {% for a in accounts %}
+        <option value="{{ a.id }}">{{ a.code }} — {{ a.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-1">
+    <button class="btn btn-primary w-100">Shto</button>
+  </div>
+</form>
+
+<div class="mb-2">
+  <strong>Bilanci aktual:</strong> {{ '%.2f'|format(balance) }}
+</div>
+
+<table class="table table-striped bg-white shadow-sm">
+  <thead>
+    <tr><th>Data</th><th>Përshkrimi</th><th class="text-end">Shuma</th><th>Llogaria</th><th></th></tr>
+  </thead>
+  <tbody>
+  {% for t in items %}
+    <tr>
+      <td>{{ t.date }}</td>
+      <td>{{ t.description }}</td>
+      <td class="text-end">{{ '%.2f'|format(t.amount) }}</td>
+      <td>{{ t.account.code if t.account else '—' }} {{ t.account.name if t.account else '' }}</td>
+      <td class="text-end">
+        <form method="post" action="{{ url_for('delete_bank', tx_id=t.id) }}" onsubmit="return confirm('Fshije?');">
+          <button class="btn btn-sm btn-outline-danger">Fshi</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
